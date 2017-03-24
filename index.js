@@ -13,7 +13,32 @@ passport.use(new GoogleStrategy({
   callbackURL: `http://localhost:${CONFIG.APP_LISTEN_PORT}/auth/google/callback`
 }, login.verifyUser))
 
-passport.authenticate('google', {scope: ['https://www.googleapis.com/auth/plus.login']})
+passport.serializeUser(function (user, done) {
+  console.log('serialize user', user)
+
+  done(null, user)
+})
+
+passport.deserializeUser(function (user, done) {
+  console.log('deserializing user', user)
+
+  done(null, user)
+})
+
+app.use(passport.initialize())
+
+app.get('/', (req, res) => {
+  console.log(req)
+  console.log(res)
+  res.send('<a href="/auth/google">Sign In with Google</a>')
+})
+
+app.get('/auth/google', passport.authenticate('google', {scope: ['https://www.googleapis.com/auth/plus.login']}))
+app.get('/auth/google/callback',
+  passport.authenticate('google', {failureRedirect: '/login'}),
+  function (req, res) {
+    res.redirect('/')
+  })
 
 app.listen(CONFIG.APP_LISTEN_PORT, function () {
   console.log(`X-Team invoice server is running at port ${CONFIG.APP_LISTEN_PORT}!`)
