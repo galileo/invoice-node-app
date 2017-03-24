@@ -14,30 +14,26 @@ passport.use(new GoogleStrategy({
 }, login.verifyUser))
 
 passport.serializeUser(function (user, done) {
-  console.log('serialize user', user)
-
   done(null, user)
 })
 
 passport.deserializeUser(function (user, done) {
-  console.log('deserializing user', user)
-
   done(null, user)
 })
 
 app.use(passport.initialize())
 
-app.get('/', (req, res) => {
-  console.log(req)
-  console.log(res)
-  res.send('<a href="/auth/google">Sign In with Google</a>')
-})
+app.get('/', (req, res) => res.send('<a href="/auth/google">Sign In with Google</a>'))
 
 app.get('/auth/google', passport.authenticate('google', {scope: ['https://www.googleapis.com/auth/plus.login']}))
+
 app.get('/auth/google/callback',
   passport.authenticate('google', {failureRedirect: '/login'}),
   function (req, res) {
-    res.redirect('/')
+
+    let {id, displayName} = req.user
+
+    res.send(`Hello you are logged in as  ${displayName} with id ${id}`)
   })
 
 app.listen(CONFIG.APP_LISTEN_PORT, function () {

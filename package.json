@@ -4,7 +4,8 @@
   "description": "X-Team server side invoice 2.0 application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [
     "node",
@@ -15,5 +16,8 @@
     "express": "^4.15.2",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }

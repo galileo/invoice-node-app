@@ -28,5 +28,11 @@ module.exports = {
 ## Run
 
 ```
-docker run --rm -v ${PWD}:/app -w /app -p 3000:3000 node node index.js  
+host$ docker run -it --rm -v ${PWD}:/app -w /app -p 3000:3000 node bash
+```
+
+This will enter your short time lived container and will allow you to start the application 
+
+```
+container$id npm start
 ```
