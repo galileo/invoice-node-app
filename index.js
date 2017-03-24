@@ -1,38 +1,26 @@
 const CONFIG = require('./config.local')
 const express = require('express')
 const passport = require('passport')
-const login = require('./src/login/index')
+
+const Authentication = require('./src/login/authentication')
+
+const auth = new Authentication(
+  CONFIG.GOOGLE_OAUTH_CLIENT_ID,
+  CONFIG.GOOGLE_OAUTH_SECRET_ID,
+  `http://localhost:${CONFIG.APP_LISTEN_PORT}`
+)
 
 const app = express()
 
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
-
-passport.use(new GoogleStrategy({
-  clientID: CONFIG.GOOGLE_OAUTH_CLIENT_ID,
-  clientSecret: CONFIG.GOOGLE_OAUTH_SECRET_ID,
-  callbackURL: `http://localhost:${CONFIG.APP_LISTEN_PORT}/auth/google/callback`
-}, login.verifyUser))
-
-passport.serializeUser(function (user, done) {
-  done(null, user)
-})
-
-passport.deserializeUser(function (user, done) {
-  done(null, user)
-})
-
-app.use(passport.initialize())
+auth.configureWebserver(app)
 
 app.get('/', (req, res) => res.send('<a href="/auth/google">Sign In with Google</a>'))
 
-app.get('/auth/google', passport.authenticate('google', {scope: ['https://www.googleapis.com/auth/plus.login']}))
+app.get('/auth/google', auth.authenticate())
 
-app.get('/auth/google/callback',
-  passport.authenticate('google', {failureRedirect: '/login'}),
+app.get('/auth/google/callback', auth.callback(),
   function (req, res) {
-
     let {id, displayName} = req.user
-
     res.send(`Hello you are logged in as  ${displayName} with id ${id}`)
   })
 
