@@ -7,7 +7,7 @@ This application will deliver API for invoice 2.0
 ## Installation
 
 ```
-npm install
+docker run --rm node npm install
 ```
 
 ## Setup
@@ -18,6 +18,9 @@ Create a config.local.js in the root directory of the project and override or se
 
 ```
 module.exports = {
+  APP_LISTEN_PORT: 3000,
+  GOOGLE_OAUTH_CLIENT_ID: 'YOUR_CLIENT_ID',
+  GOOGLE_OAUTH_SECRET_ID: 'YOUR_SECRET_ID'
 }
 ```
 
@@ -25,5 +28,5 @@ module.exports = {
 ## Run
 
 ```
-node index.js
+docker run --rm -v ${PWD}:/app -w /app -p 3000:3000 node node index.js  
 ```
