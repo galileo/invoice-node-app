@@ -1,13 +1,12 @@
-const CONFIG = require('./config.local')
 const express = require('express')
 const auth = require('./src/login/auth')
 
 const app = express()
 const Auth = auth(
   app,
-  CONFIG.GOOGLE_OAUTH_CLIENT_ID,
-  CONFIG.GOOGLE_OAUTH_SECRET_ID,
-  `http://localhost:${CONFIG.APP_LISTEN_PORT}`
+  process.env.GOOGLE_OAUTH_CLIENT_ID,
+  process.env.GOOGLE_OAUTH_SECRET_ID,
+  `http://localhost:${process.env.APP_LISTEN_PORT}`
 )
 
 app.get('/', (req, res) => res.send('<a href="/auth/google">Sign In with Google</a>'))
@@ -28,6 +27,6 @@ app.get('/user/profile', function (req, res) {
 ${JSON.stringify(req.user)}`)
 })
 
-app.listen(CONFIG.APP_LISTEN_PORT, function () {
-  console.log(`X-Team invoice server is running at port ${CONFIG.APP_LISTEN_PORT}!`)
+app.listen(process.env.APP_LISTEN_PORT, function () {
+  console.log(`X-Team invoice server is running at port ${process.env.APP_LISTEN_PORT}!`)
 })
