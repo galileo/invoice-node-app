@@ -1,5 +1,6 @@
 # Config file
 config.local.js
+.docker/web.env
 
 # Library
 node_modules/
