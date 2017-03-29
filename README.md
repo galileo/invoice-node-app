@@ -12,27 +12,29 @@ docker run --rm node npm install
 
 ## Setup
 
-### Config
+### Config & install
 
-Create a config.local.js in the root directory of the project and override or set any value provided by config.js. The minimal contents for the config.local.js file should be:
+To configure the whole stack you need to setup the docker compose environments. To handle this just copy the copy 
+distribution files
 
 ```
-module.exports = {
-  APP_LISTEN_PORT: 3000,
-  GOOGLE_OAUTH_CLIENT_ID: 'YOUR_CLIENT_ID',
-  GOOGLE_OAUTH_SECRET_ID: 'YOUR_SECRET_ID'
-}
+cp .docker/app.env.dist .docker/app.env
+cp .docker/posgress.env.dist .docker/posgress.env
+```
+When you copy you config files and setup all the data in there like google 
+API credentials you are able to install the application.
+
+```
+docker-compose run --rm app npm install
 ```
 
 
 ## Run
 
-```
-host$ docker run -it --rm -v ${PWD}:/app -w /app -p 3000:3000 node bash
-```
-
-This will enter your short time lived container and will allow you to start the application 
+To run the stack just perform 
 
 ```
-container$id npm start
+docker-compose up -d
 ```
+
+Now you can open watch your project on [http://localhost:3000/]()

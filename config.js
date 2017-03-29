@@ -1,6 +1,0 @@
-/**
- * Configuration file.
- */
-
-module.exports = {
-}

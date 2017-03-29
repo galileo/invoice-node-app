@@ -1,6 +1,6 @@
 version: "2"
 services:
-  node_web:
+  app:
     build: ./
     env_file:
       - ./.docker/app.env
