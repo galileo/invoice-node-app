@@ -17,16 +17,22 @@ app.get('/auth/google', Auth.redirectToLogin)
 app.get('/auth/google/callback', Auth.handleResponse('/user/profile'))
 
 app.get('/user/profile', function (req, res) {
-  const {username, email} = req.user
+  if (!req.user) {
+    res.redirect('/')
+  }
 
-  res.send(`<h1>UserProfile</h1>
-<p>You are successful logged in as ${username}</p>
-<form>
-  <label for="email">Email:</label>
-  <input id="email" name="email" value="${email}"/>
-</form>
-${JSON.stringify(req.user)}`)
+  const {displayName, emails} = req.user
+
+  res.send(`
+    <h1>UserProfile</h1>
+    <p>You are successful logged in as <strong>${displayName}</strong></p>
+    <form>
+      <label for="email">Email:</label>
+      <input id="email" name="email" value="${emails[0].value}"/>
+    </form>
+  `)
 })
+
 
 app.listen(CONFIG.APP_LISTEN_PORT, function () {
   console.log(`X-Team invoice server is running at port ${CONFIG.APP_LISTEN_PORT}!`)
