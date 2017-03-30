@@ -18,7 +18,7 @@ services:
     ports:
       - "5432:5432"
   db_test:
-    image: mysql:5.7.15
+    image: postgres:9.6.2-alpine
     env_file: ./.docker/postgres.env
     volumes:
       - ./data/invoice-node-app-db-test:/var/lib/postgresql
