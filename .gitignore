@@ -1,5 +1,6 @@
 # Config file
-config.local.js
+.docker/web.env
+.docker/postgres.env
 
 # Library
 node_modules/

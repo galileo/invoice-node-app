@@ -1,0 +1,26 @@
+version: "2"
+services:
+  app:
+    build: ./
+    env_file:
+      - ./.docker/app.env
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/var/www/invoice-node-app
+    working_dir: /var/www/invoice-node-app
+    command: [npm, run, dev]
+  db:
+    image: postgres:9.6.2-alpine
+    env_file: ./.docker/postgres.env
+    volumes:
+      - ./data/invoice-node-app-db:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+  db_test:
+    image: postgres:9.6.2-alpine
+    env_file: ./.docker/postgres.env
+    volumes:
+      - ./data/invoice-node-app-db-test:/var/lib/postgresql
+    ports:
+      - "5433:5432"
